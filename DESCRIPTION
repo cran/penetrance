@@ -1,7 +1,7 @@
 Package: penetrance
 Type: Package
 Title: Methods for Penetrance Estimation in Family-Based Studies
-Version: 0.1.0
+Version: 0.1.1
 Depends: R (>= 3.5.0)
 Imports: clipp, stats, parallel, MASS, kinship2 (>= 1.8.5), graphics,
         grDevices
@@ -27,9 +27,9 @@ Suggests: knitr, rmarkdown, scales, ggplot2, roxygen2, testthat (>=
         3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2025-02-26 22:15:48 UTC; nicolaskubista
+Packaged: 2025-04-02 18:49:33 UTC; nicolaskubista
 Author: Nicolas Kubista [aut, cre],
   BayesMendel Lab [aut]
 Maintainer: Nicolas Kubista <bmendel@jimmy.harvard.edu>
 Repository: CRAN
-Date/Publication: 2025-03-03 11:40:05 UTC
+Date/Publication: 2025-04-02 19:20:02 UTC
