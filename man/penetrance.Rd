@@ -201,13 +201,12 @@ head(result$summary_stats)
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/nicokubi/penetrance}
-  \item \url{https://nicokubi.github.io/penetrance/}
+  \item \url{https://github.com/bayesmendel/penetrance}
 }
 
 }
 \author{
-\strong{Maintainer}: Nicolas Kubista \email{bmendel@jimmy.harvard.edu}
+\strong{Maintainer}: Sol Rosito \email{bmendel@jimmy.harvard.edu}
 
 Authors:
 \itemize{
