@@ -398,7 +398,25 @@ parameters for the Weibull distribution.</p>
 <span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    <span class="at">Male =</span> penetrance.mod.m</span>
 <span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>)</span></code></pre></div>
 <p>The families were simulated using the PedUtils Rpackage.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>dat <span class="ot">&lt;-</span> simulated_families</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>dat <span class="ot">&lt;-</span> simulated_families</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Data preparation: Ensure proper column naming and parent ID format</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># The simulated_families dataset uses &#39;geno&#39; (lowercase) but the package expects &#39;Geno&#39; (uppercase)</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co"># Also, parent IDs coded as 0 should be NA to properly denote missing parents</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dat, <span class="cf">function</span>(df) {</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="co"># Rename geno to Geno if needed</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">&quot;geno&quot;</span> <span class="sc">%in%</span> <span class="fu">names</span>(df)) {</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    <span class="fu">names</span>(df)[<span class="fu">names</span>(df) <span class="sc">==</span> <span class="st">&quot;geno&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Geno&quot;</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  }</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="co"># Convert parent IDs coded as 0 to NA (missing parents)</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">&quot;MotherID&quot;</span> <span class="sc">%in%</span> <span class="fu">names</span>(df)) {</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    df<span class="sc">$</span>MotherID[df<span class="sc">$</span>MotherID <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>  }</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">&quot;FatherID&quot;</span> <span class="sc">%in%</span> <span class="fu">names</span>(df)) {</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>    df<span class="sc">$</span>FatherID[df<span class="sc">$</span>FatherID <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  }</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>})</span></code></pre></div>
 </div>
 <div id="simple-simulation" class="section level2">
 <h2>Simple simulation</h2>
@@ -423,9 +441,9 @@ parameters for the Weibull distribution.</p>
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co"># We run the estimation procedure with one chain and 20k iterations  </span></span>
 <span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>out_sim <span class="ot">&lt;-</span> <span class="fu">penetrance</span>(</span>
 <span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>    <span class="at">pedigree  =</span> dat, <span class="at">twins =</span> <span class="cn">NULL</span>, <span class="at">n_chains =</span> <span class="dv">1</span>, <span class="at">n_iter_per_chain =</span> <span class="dv">20000</span>, </span>
-<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>    <span class="at">ncores =</span> <span class="dv">2</span>, <span class="at">baseline_data =</span> baseline_data_default , <span class="at">prev =</span> prevMLH1, </span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>    <span class="at">ncores =</span> <span class="dv">2</span>, <span class="at">baseline_data =</span> baseline_data_default , <span class="at">allele_freq =</span> prevMLH1, </span>
 <span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>    <span class="at">prior_params =</span> prior_params, <span class="at">burn_in =</span> <span class="fl">0.1</span>, <span class="at">median_max =</span> <span class="cn">TRUE</span>,  </span>
-<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>    <span class="at">ageImputation =</span> <span class="cn">FALSE</span>, <span class="at">removeProband =</span> <span class="cn">FALSE</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>    <span class="at">age_imputation =</span> <span class="cn">FALSE</span>, <span class="at">remove_proband =</span> <span class="cn">FALSE</span></span>
 <span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="comparison-of-estimated-curves-vs.-data-generating-curves" class="section level2">

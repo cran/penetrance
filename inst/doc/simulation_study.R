@@ -32,6 +32,24 @@ generating_penetrance <- data.frame(
 
 dat <- simulated_families
 
+# Data preparation: Ensure proper column naming and parent ID format
+# The simulated_families dataset uses 'geno' (lowercase) but the package expects 'Geno' (uppercase)
+# Also, parent IDs coded as 0 should be NA to properly denote missing parents
+dat <- lapply(dat, function(df) {
+  # Rename geno to Geno if needed
+  if ("geno" %in% names(df)) {
+    names(df)[names(df) == "geno"] <- "Geno"
+  }
+  # Convert parent IDs coded as 0 to NA (missing parents)
+  if ("MotherID" %in% names(df)) {
+    df$MotherID[df$MotherID == 0] <- NA
+  }
+  if ("FatherID" %in% names(df)) {
+    df$FatherID[df$FatherID == 0] <- NA
+  }
+  return(df)
+})
+
 
 ## ----eval=FALSE---------------------------------------------------------------
 # 
@@ -55,9 +73,9 @@ dat <- simulated_families
 # # We run the estimation procedure with one chain and 20k iterations
 # out_sim <- penetrance(
 #     pedigree  = dat, twins = NULL, n_chains = 1, n_iter_per_chain = 20000,
-#     ncores = 2, baseline_data = baseline_data_default , prev = prevMLH1,
+#     ncores = 2, baseline_data = baseline_data_default , allele_freq = prevMLH1,
 #     prior_params = prior_params, burn_in = 0.1, median_max = TRUE,
-#     ageImputation = FALSE, removeProband = FALSE
+#     age_imputation = FALSE, remove_proband = FALSE
 # )
 # 
 

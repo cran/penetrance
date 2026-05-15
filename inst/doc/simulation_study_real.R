@@ -6,6 +6,11 @@ library(scales)
 
 ## -----------------------------------------------------------------------------
 dat <- test_fam2
+# geno column must be Geno
+dat <- lapply(dat, function(df) {
+  names(df)[names(df) == "geno"] <- "Geno"
+  df
+})
 
 ## ----eval=FALSE---------------------------------------------------------------
 # # Set the random seed
@@ -19,7 +24,7 @@ dat <- test_fam2
 #     first_quartile = list(q1 = 6, q2 = 3)
 # )
 # 
-# # Set the allele frequency for MLH1 based on PanelPRO Database
+# # Set the allele frequency for MLH1 based on Fam3PRO Database
 # prevMLH1 <- 0.0004453125
 # 
 # # We use the default baseline (non-carrier) penetrance
@@ -28,8 +33,8 @@ dat <- test_fam2
 # # We run the estimation procedure with one chain and 20k iterations
 # out_sim <- penetrance(
 #     pedigree  = dat, twins = NULL, n_chains = 1, n_iter_per_chain = 20000,
-#     ncores = 2, baseline_data = baseline_data_default , prev = prevMLH1,
+#     ncores = 2, baseline_data = baseline_data_default , allele_freq = prevMLH1,
 #     prior_params = prior_params, burn_in = 0.1, median_max = TRUE,
-#     ageImputation = FALSE, removeProband = FALSE
+#     age_imputation = FALSE, remove_proband = FALSE
 # )
 

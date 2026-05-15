@@ -345,7 +345,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <p>The R package <code>penetrance</code> provides an estimation of
 age-specific penetrance for complex family-based studies in a format
-compatible with with the PanelPRO R package.</p>
+compatible with with the Fam3PRO R package.</p>
 <p>This vignette demonstrates the process of age imputation and
 penetrance estimation using the<code>penetrance</code> package based on
 family data and user-specified inputs.</p>
@@ -487,7 +487,7 @@ approach is run. Available options are:</p>
 <span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&#39; @param thinning_factor Integer, the factor by which to thin the results. Default is 1 (no thinning).</span></span>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&#39; @param imp_interval Integer, the interval at which age imputation should be performed when age_imputation = TRUE.</span></span>
 <span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&#39; @param distribution_data Data for generating prior distributions.</span></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&#39; @param prev Numeric, prevalence of the carrier status. Default is 0.0001.</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&#39; @param allele_freq Numeric, the population allele frequency of the risk variant (p). This will be automatically converted to carrier prevalence (approximately 2p for rare diseases) for internal Bayesian calculations. Default is 0.0001.</span></span>
 <span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&#39; @param sample_size Optional numeric, sample size for distribution generation.</span></span>
 <span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&#39; @param ratio Optional numeric, ratio parameter for distribution generation.</span></span>
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&#39; @param prior_params List, parameters for prior distributions.</span></span>
@@ -510,7 +510,9 @@ approach is run. Available options are:</p>
 number of cores for the paralellization is set to
 <code>ncores = 4</code>.</li>
 <li>The pedigree data are the test family 1.</li>
-<li>The prevalence is set at <code>prev = 0.0001</code>.</li>
+<li>The allele frequency is set at <code>allele_freq = 0.0001</code>,
+which will be automatically converted to carrier prevalence
+(approximately 0.0002 for rare variants).</li>
 <li>The <code>penetrance</code> function takes baseline age-specific
 probabilitie of developing cancer as as input
 <code>baseline_data</code>. In the default setting with
